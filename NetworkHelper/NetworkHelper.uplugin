@@ -23,6 +23,13 @@
       "Name": "WebSocketHelper",
       "Type": "Runtime",
       "LoadingPhase": "Default"
+    },
+    {
+      "Name": "RemoteControl",
+      "Type": "Runtime",
+      "LoadingPhase": "Default"
     }
+
+
   ]
 }
