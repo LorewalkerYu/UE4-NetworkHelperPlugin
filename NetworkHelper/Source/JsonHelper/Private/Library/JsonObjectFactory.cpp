@@ -1,9 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "JsonObjectFactory.h"
-#include "JsonObj.h"
-
+#include "Library/JsonObjectFactory.h"
+#include "Json.h"
 UJsonObj* UJsonObjectFactory::ConstructJsonObject()
 {
 	TSharedPtr<FJsonObject> JsonObj = MakeShareable(new FJsonObject());

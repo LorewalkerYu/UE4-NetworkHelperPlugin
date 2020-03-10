@@ -2,10 +2,11 @@
 
 
 
-#include "JsonObj.h"
+#include "JsonObject/JsonObj.h"
 #include "Json.h"
-#include "JsonValue.h"
-#include "JsonObjectFactory.h"
+#include "Dom/JsonValue.h"
+#include "Library/JsonObjectFactory.h"
+
 
 
 void UJsonObj::SetJsonObj(TSharedPtr<FJsonObject> NewObj)

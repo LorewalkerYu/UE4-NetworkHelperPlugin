@@ -10,6 +10,7 @@ DECLARE_LOG_CATEGORY_EXTERN(LogWebsocketHelper, Log, All);
 UENUM(BlueprintType)
 enum class EFrameOpcode : uint8
 {
+	EFT_ERROR                    UMETA(DisplayName = "Error"),
 	EFT_EMPTY_FRAME   = 0xF0     UMETA(DisplayName = "EmptyFrame"),
 	EFT_ERROR_FRAME   = 0xF1     UMETA(DisplayName = "ErrorFrame"),
 	EFT_TEXT_FRAME    = 0x01     UMETA(DisplayName = "TextFrame"),

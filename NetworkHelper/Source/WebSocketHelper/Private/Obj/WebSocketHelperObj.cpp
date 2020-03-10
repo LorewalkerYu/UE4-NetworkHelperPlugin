@@ -1,8 +1,8 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
+#include "Obj/WebSocketHelperObj.h"
+#include "Library/WebSocketLibrary.h"
 
-#include "WebSocketHelperObj.h"
-#include "WebSocketLibrary.h"
 DEFINE_LOG_CATEGORY(LogWebsocketHelper);
 void UWebSocketHelperObj::ServerHandshakeResponse(const FString& ClientHandShakeRequest, TArray<uint8>& OutResponse)
 {
@@ -35,7 +35,7 @@ void UWebSocketHelperObj::ServerHandshakeResponse(const FString& ClientHandShake
 	RetStr.Append("HTTP/1.1 101 Switching Protocols\r\n");
 	RetStr.Append("Upgrade: websocket\r\n");
 	RetStr.Append("Connection: Upgrade\r\n");
-	RetStr.Append("Sec-WebSocket-Accept: " + GenerateSecWebSocketAcceptStr(SecWebSocketKey) + "\r\n");
+	RetStr.Append("Sec-WebSocket-Accept: " + this->GenerateSecWebSocketAcceptStr(SecWebSocketKey) + "\r\n");
 	RetStr.Append("\r\n");
 
 	OutResponse.Empty();

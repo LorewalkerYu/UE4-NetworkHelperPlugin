@@ -1,9 +1,9 @@
 // Fill out your copyright notice in the Description page of Project Settings.
 
 
-#include "WebSocketLibrary.h"
-#include "SecureHash.h"
-#include "Base64.h"
+#include "Library/WebSocketLibrary.h"
+#include "Misc/SecureHash.h"
+#include "Misc/Base64.h"
 #include <string>
 #include <SocketSubsystem.h>
 #include <IPAddress.h>
