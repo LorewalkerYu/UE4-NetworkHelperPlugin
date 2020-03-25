@@ -55,9 +55,14 @@ WPARAM MapLeftRightKeys(WPARAM vk, LPARAM lParam)
 	return new_vk;
 }
 #endif
+#define GET_X_LPARAM(lp)                        ((int)(short)LOWORD(lp))
+
+#define GET_Y_LPARAM(lp)                        ((int)(short)HIWORD(lp))
 
 void URCInputObj::InitilizeRCForWindows(ERCType RemoteControlType, FMouseMove MouseMove, FKeyInput KeyInput)
 {
+	ScreenSizeX = ::GetSystemMetrics(SM_CXSCREEN);
+	ScreenSizeY = ::GetSystemMetrics(SM_CYSCREEN);
 	this->RCType = RemoteControlType;
 #if PLATFORM_WINDOWS
 	switch (RCType)
@@ -147,7 +152,7 @@ void URCInputObj::InitilizeRCForWindows(ERCType RemoteControlType, FMouseMove Mo
 			}break;
 			case WM_MOUSEMOVE:
 			{
-				this->MouseMoveDele.ExecuteIfBound(LOWORD(lParam), HIWORD(lParam));
+				this->MouseMoveDele.ExecuteIfBound(GET_X_LPARAM(lParam), GET_Y_LPARAM(lParam));
 			}break;
 			case WM_MOUSEWHEEL:
 
@@ -168,10 +173,10 @@ void URCInputObj::InitilizeRCForWindows(ERCType RemoteControlType, FMouseMove Mo
 #endif
 }
 
-bool URCInputObj::SetMousePosition(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY)
+bool URCInputObj::SetMousePosition(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY, int32 OtherScreenSizeX, int32 OtherScreenSizeY)
 {
 #if PLATFORM_WINDOWS
-	return SendInputMouseMove(X, Y, OtherViewportSizeX, OtherViewportSizeY);
+	return SendInputMouseMove(X, Y, OtherViewportSizeX, OtherViewportSizeY, OtherScreenSizeX, OtherScreenSizeY);
 #endif
 	
 	return false;
@@ -210,7 +215,6 @@ bool URCInputObj::InputKey(const FName KeyName, const EInputEvent InputEvent)
 
 	if (!InputKeyGamePlay(Key, InputEvent))
 	{
-		
 		return false;
 	}
 
@@ -223,6 +227,23 @@ bool URCInputObj::InputKey(const FName KeyName, const EInputEvent InputEvent)
 	{
 		return InputKeyUI(Key, InputEvent);
 	}
+}
+
+void URCInputObj::GetScreenSize(int32& X, int32& Y)
+{
+	X = this->ScreenSizeX;
+	Y = this->ScreenSizeY;
+}
+
+void URCInputObj::GetMousePositionInScreen(int32& X, int32& Y)
+{
+	// Client Area Rect
+	FSlateRect ClientRect = GEngine->GameViewport->GetWindow()->GetClientRectInScreen();
+	float x, y;
+	PlayerController->GetMousePosition(x, y);
+	X = x + ClientRect.Left;
+	Y = y + ClientRect.Top;
+
 }
 
 int URCInputObj::GetInputKeyCode(const FKey& Key)
@@ -431,20 +452,17 @@ bool URCInputObj::InputMouseButtonUI(const FKey& Key, const EInputEvent& InputEv
 	return false;
 }
 
-bool URCInputObj::SendInputMouseMove(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY)
+bool URCInputObj::SendInputMouseMove(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY, int32 OtherScreenSizeX, int32 OtherScreenSizeY)
 {
 	// Client Area Rect
 	FSlateRect ClientRect = GEngine->GameViewport->GetWindow()->GetClientRectInScreen();
 
 	// x y coordinate convert
+	double TargetX   = double(X) * double(ClientRect.Right - ClientRect.Left) / double(OtherViewportSizeX) + ClientRect.Left;
+	double TargetY   = double(Y) * double(ClientRect.Bottom - ClientRect.Top) / double(OtherViewportSizeY) + ClientRect.Top;
 	
-	double TargetX   = double(X) / double(OtherViewportSizeX) * (ClientRect.Right  - ClientRect.Left);
-	double TargetY   = double(Y) / double(OtherViewportSizeY) * (ClientRect.Bottom - ClientRect.Top );
-
-	int ScreenWidth  = ::GetSystemMetrics(SM_CXSCREEN);
-	int ScreenHeight = ::GetSystemMetrics(SM_CYSCREEN);
-	long real_x      = (TargetX + ClientRect.Left) * double(65535 / ScreenWidth);
-	long real_y      = (TargetY + ClientRect.Top ) * double(65535 / ScreenHeight);
+	long real_x      = (TargetX) * 65535.f / double(ScreenSizeX);
+	long real_y      = (TargetY) * 65535.f / double(ScreenSizeY);
 
 	INPUT InputMouse;
 	InputMouse.type = INPUT_MOUSE;
