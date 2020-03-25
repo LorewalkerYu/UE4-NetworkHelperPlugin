@@ -173,10 +173,10 @@ void URCInputObj::InitilizeRCForWindows(ERCType RemoteControlType, FMouseMove Mo
 #endif
 }
 
-bool URCInputObj::SetMousePosition(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY, int32 OtherScreenSizeX, int32 OtherScreenSizeY)
+bool URCInputObj::SetMousePosition(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY)
 {
 #if PLATFORM_WINDOWS
-	return SendInputMouseMove(X, Y, OtherViewportSizeX, OtherViewportSizeY, OtherScreenSizeX, OtherScreenSizeY);
+	return SendInputMouseMove(X, Y, OtherViewportSizeX, OtherViewportSizeY);
 #endif
 	
 	return false;
@@ -452,7 +452,7 @@ bool URCInputObj::InputMouseButtonUI(const FKey& Key, const EInputEvent& InputEv
 	return false;
 }
 
-bool URCInputObj::SendInputMouseMove(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY, int32 OtherScreenSizeX, int32 OtherScreenSizeY)
+bool URCInputObj::SendInputMouseMove(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY)
 {
 	// Client Area Rect
 	FSlateRect ClientRect = GEngine->GameViewport->GetWindow()->GetClientRectInScreen();

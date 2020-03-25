@@ -34,7 +34,7 @@ public:
 
 	/** Positions the mouse cursor in screen space, in pixels. */
 	UFUNCTION(BlueprintCallable, meta = (BlueprintProtected = "true"), Category = "NetworkHelperPlugin|RemoteControl|Input")
-		bool SetMousePosition(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY, int32 OtherScreenSizeX, int32 OtherScreenSizeY);
+		bool SetMousePosition(int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY);
 
 	UFUNCTION(BlueprintCallable, meta = (BlueprintProtected = "true"), Category = "NetworkHelperPlugin|RemoteControl|Input")
 		bool InputMouseWheel(bool bForward);
@@ -58,7 +58,7 @@ protected:
 	bool  InputKeyUI          (const FKey& Key, const EInputEvent& InputEvent);
 	bool  InputMouseButtonUI  (const FKey& Key, const EInputEvent& InputEvent);
 
-	bool  SendInputMouseMove  (int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY, int32 OtherScreenSizeX, int32 OtherScreenSizeY);
+	bool  SendInputMouseMove  (int32 X, int32 Y, int32 OtherViewportSizeX, int32 OtherViewportSizeY);
 	bool  SendInputKey        (const FKey& Key, const EInputEvent& InputEvent);
 	bool  SendInputMouseWheel (bool bForward);
 
