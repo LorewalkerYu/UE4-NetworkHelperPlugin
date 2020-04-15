@@ -477,7 +477,7 @@ bool URCInputObj::SendInputMouseMove(int32 X, int32 Y, int32 OtherViewportSizeX,
 		FString str = FString::FromInt(X) + "," + FString::FromInt(Y) + "   -----   " + FString::FromInt(real_x) + "," + FString::FromInt(real_y);
 		GEngine->AddOnScreenDebugMessage(0, 0.1f, FColor::Blue, *str);
 	}
-	return ::SendInput(1, &InputMouse, sizeof(INPUT));
+	return (::SendInput(1, &InputMouse, sizeof(INPUT)) == 1);
 }
 
 bool URCInputObj::SendInputKey(const FKey& Key, const EInputEvent& InputEvent)
@@ -541,7 +541,7 @@ bool URCInputObj::SendInputKey(const FKey& Key, const EInputEvent& InputEvent)
 	}
 
 	
-	return ::SendInput(1, &Input, sizeof(INPUT));;
+	return (::SendInput(1, &Input, sizeof(INPUT)) == 1);
 }
 
 bool URCInputObj::SendInputMouseWheel(bool bForward)
@@ -558,6 +558,6 @@ bool URCInputObj::SendInputMouseWheel(bool bForward)
 		Input.mi.mouseData = WHEEL_DELTA * -1;
 	}
 	
-	return ::SendInput(1, &Input, sizeof(INPUT));
+	return (::SendInput(1, &Input, sizeof(INPUT)) == 1);
 }
 
