@@ -384,12 +384,12 @@ bool UJsonObj::GetVector3DField(const FString& FieldName, FVector& OutVector) co
 		return false;
 	}
 
-	if (!JsonObject->GetNumberField("Y", X))
+	if (!JsonObject->GetNumberField("Y", Y))
 	{
 		return false;
 	}
 
-	if (!JsonObject->GetNumberField("Z", X))
+	if (!JsonObject->GetNumberField("Z", Z))
 	{
 		return false;
 	}
